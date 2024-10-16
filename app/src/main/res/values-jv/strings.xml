@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Database Kamar</string>
+    <string name="nama_lengkap">Jeneng Lengkap</string>
+    <string name="capture_camera">Njupuk Kamera</string>
+    <string name="send_data">Ngirim Data</string>
+</resources>
