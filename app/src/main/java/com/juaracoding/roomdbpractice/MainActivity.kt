@@ -2,10 +2,12 @@ package com.juaracoding.roomdbpractice
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -69,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
         lstItem.layoutManager = LinearLayoutManager(this)
         itemViewModel.allItem.observe(this){
-           lstItem.adapter = ItemAdapter(it)
+           lstItem.adapter = ItemAdapter(it, {item ->showDialog(item)})
         }
 
 
@@ -115,5 +117,31 @@ class MainActivity : AppCompatActivity() {
 
 
         return file
+    }
+
+
+    fun showDialog(item:ItemModel){
+        val dialogShow = LayoutInflater.from(this).inflate(R.layout.dialog,null)
+        val txtName = dialogShow.findViewById<EditText>(R.id.edit_text)
+        val imgFoto = dialogShow.findViewById<ImageView>(R.id.image_view)
+
+        txtName.setText(item.nama)
+        imgFoto.setImageBitmap(BitmapFactory.decodeFile(item.foto))
+
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setView(dialogShow)
+            .setNeutralButton("Cancel",{dialogInterface,i ->
+                dialogInterface.dismiss()
+            })
+
+            .setNegativeButton("Delete",{dialogInterface,i ->
+                itemViewModel.delete(item.id)
+                Toast.makeText(this,"Data Berhasil Dihapus",Toast.LENGTH_LONG).show()
+            })
+
+
+            .create()
+        dialog.show()
+
     }
 }
