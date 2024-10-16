@@ -17,6 +17,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.juaracoding.roomdbpractice.adapter.ItemAdapter
 import com.juaracoding.roomdbpractice.model.ItemModel
 import com.juaracoding.roomdbpractice.viewmodel.ItemViewModel
 import java.io.File
@@ -33,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var btnSend : Button
     lateinit var fileSave :File
     lateinit var itemViewModel: ItemViewModel
+    lateinit var lstItem : RecyclerView
 
 
 
@@ -42,9 +46,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         itemViewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
 
-       itemViewModel.allItem.observe(this){
-           Log.d("Data Item",it.toString())
-       }
+
 
 
         initComponent()
@@ -62,6 +64,14 @@ class MainActivity : AppCompatActivity() {
         imgPhoto = findViewById(R.id.imgPhoto)
         btnCapture = findViewById(R.id.btnCamera)
         btnSend = findViewById(R.id.btnSave)
+
+        lstItem = findViewById(R.id.lstData)
+
+        lstItem.layoutManager = LinearLayoutManager(this)
+        itemViewModel.allItem.observe(this){
+           lstItem.adapter = ItemAdapter(it)
+        }
+
 
 
         btnCapture.setOnClickListener{
