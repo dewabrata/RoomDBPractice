@@ -9,11 +9,16 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
+import com.juaracoding.roomdbpractice.model.ItemModel
+import com.juaracoding.roomdbpractice.viewmodel.ItemViewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -26,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var imgPhoto : ImageView
     lateinit var btnCapture : Button
     lateinit var btnSend : Button
+    lateinit var fileSave :File
+    lateinit var itemViewModel: ItemViewModel
 
 
 
@@ -33,12 +40,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+        itemViewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
+
+       itemViewModel.allItem.observe(this){
+           Log.d("Data Item",it.toString())
+       }
+
+
         initComponent()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+
     }
 
     fun initComponent(){
@@ -57,13 +73,21 @@ class MainActivity : AppCompatActivity() {
 
 
         }
+        btnSend.setOnClickListener{
+
+            val itemModel  = ItemModel(nama = txtNama.text.toString(), foto = fileSave.absolutePath)
+            itemViewModel.insert(itemModel)
+
+            Toast.makeText(this,"Data Berhasil disimpan",Toast.LENGTH_LONG).show()
+
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 88 && resultCode == RESULT_OK){
-            val file = createImageFile(data?.extras?.get("data") as Bitmap)
-            Log.d("Url File", file.absolutePath)
+            fileSave = createImageFile(data?.extras?.get("data") as Bitmap)
+            Log.d("Url File", fileSave.absolutePath)
             imgPhoto.setImageBitmap(data?.extras?.get("data") as Bitmap)
         }
 

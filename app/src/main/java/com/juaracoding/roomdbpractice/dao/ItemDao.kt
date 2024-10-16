@@ -1,5 +1,6 @@
 package com.juaracoding.roomdbpractice.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -9,15 +10,15 @@ import com.juaracoding.roomdbpractice.model.ItemModel
 @Dao
 interface ItemDao {
     @Query("SELECT * FROM item order by id ASC")
-    fun getAll(): List<ItemModel>
+    fun getAll(): LiveData<List<ItemModel>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(item: ItemModel)
+    suspend fun insert(item: ItemModel)
 
     @Query("DELETE FROM item")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Query("DELETE FROM item WHERE id = :itemId")
-    fun deleteById(itemId: Int)
+    suspend  fun deleteById(itemId: Int)
 
 }

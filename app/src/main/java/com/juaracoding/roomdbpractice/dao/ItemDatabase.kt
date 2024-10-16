@@ -1,5 +1,6 @@
 package com.juaracoding.roomdbpractice.dao
 
+import android.content.ClipData.Item
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -15,7 +16,7 @@ abstract class ItemDatabase :RoomDatabase() {
         @Volatile
         private var INSTANCE : ItemDatabase?=null
 
-        fun getDatabase(context: Context) : Any {
+        fun getDatabase(context: Context) : ItemDatabase {
 
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(

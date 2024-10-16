@@ -12,6 +12,7 @@ constraintlayout = "2.1.4"
 roomRuntime = "2.7.0-alpha09"
 roomCompiler = "2.7.0-alpha09"
 roomKtx = "2.7.0-alpha09"
+lifecycleLivedataKtx = "2.9.0-alpha04"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -26,6 +27,8 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomRuntime" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
+room-compiler = { module = "androidx.room:room-compiler" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
